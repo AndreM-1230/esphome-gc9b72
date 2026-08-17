@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Arduino_GFX_Library.h>
-#include "Arduino_GC9B72.h"
+#include <Arduino_GC9B72.h>
 
 #include "esphome/components/display/display_buffer.h"
 
@@ -10,8 +10,14 @@ namespace gc9b72 {
 
 class GC9B72Display : public display::DisplayBuffer {
  public:
-  GC9B72Display(int clk_pin, int mosi_pin, int cs_pin, int dc_pin, int reset_pin,
-                uint8_t rotation, int32_t data_rate);
+  GC9B72Display(
+      int clk_pin,
+      int mosi_pin,
+      int cs_pin,
+      int dc_pin,
+      int reset_pin,
+      uint8_t rotation,
+      int32_t data_rate);
 
   void setup() override;
   void update() override;
@@ -25,19 +31,35 @@ class GC9B72Display : public display::DisplayBuffer {
 
  protected:
   void draw_absolute_pixel_internal(int x, int y, Color color) override;
-  int get_width_internal() override { return 360; }
-  int get_height_internal() override { return 360; }
+
+  int get_width_internal() override {
+    return 360;
+  }
+
+  int get_height_internal() override {
+    return 360;
+  }
+
+  // Convert ESPHome Color to compact RGB332.
+  uint8_t color_to_rgb332_(Color color);
+
+  // Convert compact RGB332 to RGB565.
+  uint16_t rgb332_to_rgb565_(uint8_t color);
 
   int clk_pin_;
   int mosi_pin_;
   int cs_pin_;
   int dc_pin_;
   int reset_pin_;
+
   uint8_t rotation_;
   int32_t data_rate_;
 
   Arduino_DataBus *bus_{nullptr};
   Arduino_GFX *gfx_{nullptr};
+
+  // One RGB565 line = 360 * 2 bytes = 720 bytes.
+  uint16_t line_buffer_[360];
 };
 
 }  // namespace gc9b72
