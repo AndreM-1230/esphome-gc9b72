@@ -47,10 +47,6 @@ async def to_code(config):
         "moononournation/GFX Library for Arduino",
         None,
     )
-    cg.add_library(
-        "SPI",
-        None,
-    )
 
     # Безопасно получаем числовое значение rotation из конфига ESPHome
     rotation_val = config[CONF_ROTATION]
