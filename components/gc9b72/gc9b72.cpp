@@ -96,7 +96,7 @@ void GC9B72Display::setup() {
   /*
    * Clear physical display.
    */
-  this->gfx_->fillScreen(BLACK);
+  this->gfx_->fillScreen(0x0000);
 
   ESP_LOGI(
       TAG,
