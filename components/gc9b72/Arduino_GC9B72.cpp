@@ -39,21 +39,27 @@ void Arduino_GC9B72::writeAddrWindow(int16_t x, int16_t y, uint16_t w, uint16_t 
 void Arduino_GC9B72::setRotation(uint8_t r)
 {
   Arduino_TFT::setRotation(r);
+
   switch (_rotation)
   {
-  case 1:
-    r = GC9B72_MADCTL_MV | GC9B72_MADCTL_MX | GC9B72_MADCTL_RGB;
-    break;
-  case 2:
-    r = GC9B72_MADCTL_MX | GC9B72_MADCTL_MY | GC9B72_MADCTL_RGB;
-    break;
-  case 3:
-    r = GC9B72_MADCTL_MV | GC9B72_MADCTL_MY | GC9B72_MADCTL_RGB;
-    break;
-  default: // case 0:
+  case 0:
     r = GC9B72_MADCTL_RGB;
     break;
+
+  case 1:
+    r = GC9B72_MADCTL_MV | GC9B72_MADCTL_MY | GC9B72_MADCTL_RGB;
+    break;
+
+  case 2:
+    r = GC9B72_MADCTL_MX | GC9B72_MADCTL_RGB;
+    break;
+
+  case 3:
+    r = GC9B72_MADCTL_MV | GC9B72_MADCTL_MX | GC9B72_MADCTL_MY |
+        GC9B72_MADCTL_RGB;
+    break;
   }
+
   _bus->beginWrite();
   _bus->writeCommand(GC9B72_MADCTL);
   _bus->write(r);
