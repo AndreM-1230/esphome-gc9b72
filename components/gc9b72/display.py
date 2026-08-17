@@ -42,6 +42,12 @@ CONFIG_SCHEMA = (
 
 
 async def to_code(config):
+    # Подключаем Arduino GFX Library
+    cg.add_library(
+        "moononournation/GFX Library for Arduino",
+        None,
+    )
+
     # Безопасно получаем числовое значение rotation из конфига ESPHome
     rotation_val = config[CONF_ROTATION]
 
@@ -52,7 +58,7 @@ async def to_code(config):
         config[CONF_CS_PIN],
         config[CONF_DC_PIN],
         config[CONF_RESET_PIN],
-        rotation_val,  # Передаем градусы (0, 90, 180, 270) в C++ конструктор
+        rotation_val,
         config[CONF_DATA_RATE],
     )
 

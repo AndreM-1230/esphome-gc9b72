@@ -1,0 +1,7 @@
+{
+  "name": "GC9B72 ESPHome",
+  "version": "1.0.0",
+  "dependencies": {
+    "moononournation/GFX Library for Arduino": "^1.6.0"
+  }
+}
