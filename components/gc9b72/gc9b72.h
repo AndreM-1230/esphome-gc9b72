@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Arduino_GFX_Library.h>
-#include <Arduino_GC9B72.h>
+#include "Arduino_GC9B72.h"
 
 #include "esphome/components/display/display_buffer.h"
 

@@ -1,4 +1,5 @@
 #include "gc9b72.h"
+#include "Arduino_GC9B72.h"
 
 #include "esphome/core/log.h"
 #include "esphome/components/display/display_color_utils.h"
