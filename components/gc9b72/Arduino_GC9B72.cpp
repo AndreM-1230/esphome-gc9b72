@@ -43,20 +43,33 @@ void Arduino_GC9B72::setRotation(uint8_t r)
   switch (_rotation)
   {
   case 0:
-    r = GC9B72_MADCTL_RGB;
+    // Физическая ориентация конкретного дисплея:
+    // дополнительно поворачиваем на 90° по часовой
+    r = GC9B72_MADCTL_MV |
+        GC9B72_MADCTL_MX |
+        GC9B72_MADCTL_RGB;
     break;
 
   case 1:
-    r = GC9B72_MADCTL_MV | GC9B72_MADCTL_MY | GC9B72_MADCTL_RGB;
+    r = GC9B72_MADCTL_MV |
+        GC9B72_MADCTL_MX |
+        GC9B72_MADCTL_RGB;
     break;
 
   case 2:
-    r = GC9B72_MADCTL_MX | GC9B72_MADCTL_RGB;
+    r = GC9B72_MADCTL_MX |
+        GC9B72_MADCTL_MY |
+        GC9B72_MADCTL_RGB;
     break;
 
   case 3:
-    r = GC9B72_MADCTL_MV | GC9B72_MADCTL_MX | GC9B72_MADCTL_MY |
+    r = GC9B72_MADCTL_MV |
+        GC9B72_MADCTL_MY |
         GC9B72_MADCTL_RGB;
+    break;
+
+  default:
+    r = GC9B72_MADCTL_RGB;
     break;
   }
 
