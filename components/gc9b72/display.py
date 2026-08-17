@@ -47,6 +47,9 @@ async def to_code(config):
         "moononournation/GFX Library for Arduino",
         None,
     )
+    cg.add_build_flag(
+        "-I$PROJECT_PACKAGES_DIR/framework-arduinoespressif32/libraries/SPI/src"
+    )
 
     # Безопасно получаем числовое значение rotation из конфига ESPHome
     rotation_val = config[CONF_ROTATION]

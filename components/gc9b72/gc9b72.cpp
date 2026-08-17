@@ -1,5 +1,3 @@
-#include <SPI.h>
-
 #include "gc9b72.h"
 
 #include "esphome/core/log.h"
