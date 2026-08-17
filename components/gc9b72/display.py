@@ -47,10 +47,6 @@ async def to_code(config):
         "moononournation/GFX Library for Arduino",
         None,
     )
-    cg.add_library(
-        "MaliosDark/Arduino_GC9B72",
-        None,
-    )
     cg.add_build_flag(
         "-I$PROJECT_PACKAGES_DIR/framework-arduinoespressif32/libraries/SPI/src"
     )
