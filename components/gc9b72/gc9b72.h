@@ -30,7 +30,10 @@ class GC9B72Display : public display::DisplayBuffer {
   void fill(Color color) override;
 
  protected:
-  void draw_absolute_pixel_internal(int x, int y, Color color) override;
+  void draw_absolute_pixel_internal(
+      int x,
+      int y,
+      Color color) override;
 
   int get_width_internal() override {
     return 360;
@@ -40,10 +43,7 @@ class GC9B72Display : public display::DisplayBuffer {
     return 360;
   }
 
-  // Convert ESPHome Color to compact RGB332.
   uint8_t color_to_rgb332_(Color color);
-
-  // Convert compact RGB332 to RGB565.
   uint16_t rgb332_to_rgb565_(uint8_t color);
 
   int clk_pin_;
@@ -52,13 +52,13 @@ class GC9B72Display : public display::DisplayBuffer {
   int dc_pin_;
   int reset_pin_;
 
-  display::DisplayRotation rotation;
+  display::DisplayRotation rotation_;
   int32_t data_rate_;
 
   Arduino_DataBus *bus_{nullptr};
   Arduino_GFX *gfx_{nullptr};
 
-  // One RGB565 line = 360 * 2 bytes = 720 bytes.
+  // 360 pixels × 2 bytes RGB565
   uint16_t line_buffer_[360];
 };
 
