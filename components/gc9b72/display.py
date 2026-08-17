@@ -42,8 +42,8 @@ CONFIG_SCHEMA = (
 
 
 async def to_code(config):
-    # Получаем числовое значение поворота через встроенный helper ESPHome (вернет 0, 90, 180 или 270, либо индекс)
-    rotation = display.vcall_rotation(config)
+    # Безопасно извлекаем числовой поворот через встроенный метод дисплея ESPHome
+    rotation_val = display.vcall_rotation(config)
 
     var = cg.new_Pvariable(
         config[CONF_ID],
@@ -52,7 +52,7 @@ async def to_code(config):
         config[CONF_CS_PIN],
         config[CONF_DC_PIN],
         config[CONF_RESET_PIN],
-        config[CONF_ROTATION], # Передаем исходное значение в C++ конструктор
+        rotation_val,  # Передаем готовое число в C++ конструктор
         config[CONF_DATA_RATE],
     )
 
