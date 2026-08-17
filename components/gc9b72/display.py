@@ -50,6 +50,9 @@ async def to_code(config):
     cg.add_build_flag(
         "-I$PROJECT_PACKAGES_DIR/framework-arduinoespressif32/libraries/SPI/src"
     )
+    cg.add_build_flag(
+        "-I$PROJECT_PACKAGES_DIR/framework-arduinoespressif32/libraries/Wire/src"
+    )
 
     # Безопасно получаем числовое значение rotation из конфига ESPHome
     rotation_val = config[CONF_ROTATION]
