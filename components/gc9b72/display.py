@@ -2,7 +2,7 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 
 from esphome.components import display
-from esphome.const import CONF_ID
+from esphome.const import CONF_ID, CONF_ROTATION
 
 gc9b72_ns = cg.esphome_ns.namespace("gc9b72")
 
@@ -16,7 +16,6 @@ CONF_MOSI_PIN = "mosi_pin"
 CONF_CS_PIN = "cs_pin"
 CONF_DC_PIN = "dc_pin"
 CONF_RESET_PIN = "reset_pin"
-CONF_ROTATION = "rotation"
 CONF_DATA_RATE = "data_rate"
 
 CONFIG_SCHEMA = (
@@ -31,15 +30,7 @@ CONFIG_SCHEMA = (
             cv.Required(CONF_DC_PIN): cv.int_,
             cv.Required(CONF_RESET_PIN): cv.int_,
 
-            cv.Optional(
-                CONF_ROTATION,
-                default=1,
-            ): cv.one_of(0, 1, 2, 3, int=True),
-
-            cv.Optional(
-                CONF_DATA_RATE,
-                default=20000000,
-            ): cv.int_range(
+            cv.Optional(CONF_DATA_RATE, default=20000000): cv.int_range(
                 min=1000000,
                 max=80000000,
             ),
@@ -51,6 +42,9 @@ CONFIG_SCHEMA = (
 
 
 async def to_code(config):
+    # Получаем числовое значение поворота через встроенный helper ESPHome (вернет 0, 90, 180 или 270, либо индекс)
+    rotation = display.vcall_rotation(config)
+
     var = cg.new_Pvariable(
         config[CONF_ID],
         config[CONF_CLK_PIN],
@@ -58,15 +52,11 @@ async def to_code(config):
         config[CONF_CS_PIN],
         config[CONF_DC_PIN],
         config[CONF_RESET_PIN],
-        config[CONF_ROTATION],
+        config[CONF_ROTATION], # Передаем исходное значение в C++ конструктор
         config[CONF_DATA_RATE],
     )
 
     await display.register_display(var, config)
-    
-    # Убираем автоматический вызов set_rotation из базового класса, 
-    # так как rotation обрабатывается внутри драйвера Arduino_GFX в C++
-    cg.add(var.set_rotation(config[CONF_ROTATION]))
 
     if display.CONF_LAMBDA in config:
         lambda_ = await cg.process_lambda(
