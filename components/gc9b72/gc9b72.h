@@ -16,7 +16,7 @@ class GC9B72Display : public display::DisplayBuffer {
       int cs_pin,
       int dc_pin,
       int reset_pin,
-      uint8_t rotation,
+      display::DisplayRotation rotation,
       int32_t data_rate);
 
   void setup() override;
@@ -52,7 +52,7 @@ class GC9B72Display : public display::DisplayBuffer {
   int dc_pin_;
   int reset_pin_;
 
-  uint8_t rotation_;
+  display::DisplayRotation rotation;
   int32_t data_rate_;
 
   Arduino_DataBus *bus_{nullptr};

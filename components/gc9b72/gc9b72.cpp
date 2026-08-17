@@ -15,7 +15,7 @@ GC9B72Display::GC9B72Display(
     int cs_pin,
     int dc_pin,
     int reset_pin,
-    uint8_t rotation,
+    display::DisplayRotation rotation,
     int32_t data_rate)
     : clk_pin_(clk_pin),
       mosi_pin_(mosi_pin),
@@ -65,13 +65,34 @@ void GC9B72Display::setup() {
     return;
   }
 
+  uint8_t gfx_rotation = 0;
+
+  switch (this->rotation_) {
+    case display::DISPLAY_ROTATION_90_DEGREES:
+      gfx_rotation = 1;
+      break;
+
+    case display::DISPLAY_ROTATION_180_DEGREES:
+      gfx_rotation = 2;
+      break;
+
+    case display::DISPLAY_ROTATION_270_DEGREES:
+      gfx_rotation = 3;
+      break;
+
+    case display::DISPLAY_ROTATION_0_DEGREES:
+    default:
+      gfx_rotation = 0;
+      break;
+  }
+  
   /*
    * GC9B72 360x360.
    */
   this->gfx_ = new Arduino_GC9B72(
       this->bus_,
       this->reset_pin_,
-      this->rotation_,
+      gfx_rotation,
       false,
       360,
       360);
@@ -99,10 +120,10 @@ void GC9B72Display::setup() {
   this->gfx_->fillScreen(0x0000);
 
   ESP_LOGI(
-      TAG,
-      "GC9B72 initialized: 360x360, rotation=%u, SPI=%ld Hz",
-      this->rotation_,
-      static_cast<long>(this->data_rate_));
+    TAG,
+    "GC9B72 initialized: 360x360, rotation=%d, SPI=%ld Hz",
+    static_cast<int>(this->rotation_),
+    static_cast<long>(this->data_rate_));
 
   ESP_LOGI(
       TAG,
