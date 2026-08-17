@@ -51,7 +51,6 @@ CONFIG_SCHEMA = (
 
 
 async def to_code(config):
-
     var = cg.new_Pvariable(
         config[CONF_ID],
         config[CONF_CLK_PIN],
@@ -64,13 +63,15 @@ async def to_code(config):
     )
 
     await display.register_display(var, config)
+    
+    # Убираем автоматический вызов set_rotation из базового класса, 
+    # так как rotation обрабатывается внутри драйвера Arduino_GFX в C++
+    cg.add(var.set_rotation(config[CONF_ROTATION]))
 
     if display.CONF_LAMBDA in config:
-
         lambda_ = await cg.process_lambda(
             config[display.CONF_LAMBDA],
             [(display.DisplayRef, "it")],
             return_type=cg.void,
         )
-
         cg.add(var.set_writer(lambda_))
